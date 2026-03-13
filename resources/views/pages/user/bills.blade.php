@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowDesk</title>
+    <link rel="stylesheet" href="./../styles.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="dashboard.html">Tableau de bord</a></li>
+                <li><a href="project.html">Mes Projets</a></li>
+                <li><a href="tickets.html">Tickets</a></li>
+                <li><a href="bills.html" class="active">Facturation</a></li>
+                <li><a href="documents.html">Documents</a></li>
+                <li><a href="contacts.html">Contacts</a></li>
+                <li><a href="settings.html">Settings</a></li>
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <span>user</span>
+            <div class="avatar">U</div>
+        </div>
+    </header>
+
+    <div class="content">
+        <div class="page-actions">
+            <h1>Factures & Devis</h1>
+            <a href="new_bills.html" class="btn-create">+ Nouvelle Facture</a>
+        </div>
+
+        <div class="filter-section" style="margin-bottom: 20px;">
+            <p style="font-weight: 600; margin-bottom: 10px;">Filtrer par :</p>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                <button class="filter-btn btn-cancel" data-category="all">Tout voir</button>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <span style="align-self: center; font-size: 13px; color: #94a3b8;">État :</span>
+                <button class="filter-btn btn-cancel" data-category="status" data-value="Payée">Payée</button>
+                <button class="filter-btn btn-cancel" data-category="status" data-value="in progress">En cours</button>
+                <button class="filter-btn btn-cancel" data-category="status" data-value="Cancel">Cancel</button>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Montant HT</th>
+                        <th>Statut</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bill-rows">
+                    <tr>
+                        <td><strong>FAC-2024-001</strong></td>
+                        <td>GreenMarket SAS</td>
+                        <td>15 Jan 2024</td>
+                        <td>1 250,00 €</td>
+                        <td><span class="status-badge status-done">Payée</span></td>
+                        <td class="text-right">
+                            <a href="#" class="btn-details">Télécharger</a>
+                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>FAC-2024-002</strong></td>
+                        <td>Groupe Dupond</td>
+                        <td>28 Jan 2024</td>
+                        <td>840,00 €</td>
+                        <td><span class="status-badge status-cancel">Cancel</span></td>
+                        <td class="text-right">
+                            <a href="#" class="btn-details">Télécharger</a>
+                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>FAC-2024-002</strong></td>
+                        <td>Groupe Dupond</td>
+                        <td>28 Jan 2024</td>
+                        <td>840,00 €</td>
+                        <td><span class="status-badge status-progress">in progress</span></td>
+                        <td class="text-right">
+                            <a href="#" class="btn-details">Télécharger</a>
+                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="./../javascript/filter_bills.js"></script>
+
+</body>
+</html>
