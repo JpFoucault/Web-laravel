@@ -1,44 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
+@include('pages.user.partials.head')
 
 
 <body>
     
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html" class="active">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'documents'])
 
     <div class="content">
         
         <div class="page-actions">
             <h1>Documents & Fichiers</h1>
-            <a href="new_documents.html" class="btn-create">Importer un fichier</a>
+            <a href="{{ url('new_documents') }}" class="btn-create">Importer un fichier</a>
         </div>
 
         <div class="table-card">

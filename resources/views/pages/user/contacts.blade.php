@@ -1,43 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
+@include('pages.user.partials.head')
 
 
 <body>
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html" class="active">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'contacts'])
 
     <div class="content_contact">
         
         <div class="page-actions">
             <h1>Répertoire Contacts</h1>
-            <a href="new_contacts.html" class="btn-create">+ Nouveau Contact</a>
+            <a href="{{ url('new_contacts') }}" class="btn-create">+ Nouveau Contact</a>
         </div>
 
         <div class="table-card">
@@ -167,7 +138,7 @@
             </div>
 
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                <a href="modif_contacts.html" class="btn-edit-contact">Modifier le contact</a>
+                <a href="{{ url('modif_contacts') }}" class="btn-edit-contact">Modifier le contact</a>
                 <a href="#" class="btn-supr">Supprimer le contact</a>
                 <a href="#" class="btn-modal-action" style="background-color: #334155; border: 1px solid #475569;">Fermer</a>
             </div>

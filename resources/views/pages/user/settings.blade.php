@@ -1,38 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
+@include('pages.user.partials.head')
 
 
 <body>
     
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html" class="active">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'settings'])
 
     <div class="content_create">
         
@@ -81,18 +52,22 @@
                 </div>
                 <span class="section-title">Sécurité</span>
 
-                <div class="form-group">
-                    <button type="button" class="btn-password">Modifier le mot de passe</button>
-                </div>
+                <span class="section-title">Gestion du profil</span>
 
                 <div class="form-group">
-                    <a href="./../login/login.html" class="btn-logout">Se déconnecter</a>
+                    <a href="{{ route('profile.edit') }}" class="btn-password" style="display: block; text-decoration: none;">
+                        Modifier mes informations (Nom, Email, Mot de passe)
+                    </a>
                 </div>
 
-            </form>
-        </div>
+            </form> <span class="section-title">Déconnexion</span>
 
-    </div>
+            <div class="form-group">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn-logout" style="width: 100%;">Se déconnecter</button>
+                </form>
+            </div>
 
-</body>
+        </div> </div> </body>
 </html>

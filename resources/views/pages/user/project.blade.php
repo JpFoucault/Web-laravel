@@ -1,42 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
+@include('pages.user.partials.head')
 
 
 <body>
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html" class="active">Mes Projets</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'project'])
 
     <div class="content">
         <div class="page-actions">
             <h1>Liste des Projets</h1>
-            <a href="create_new_project.html" class="btn-create">+ Nouveau Projet</a>
+            <a href="{{ url('create_new_project') }}" class="btn-create">+ Nouveau Projet</a>
         </div>
 
         <div class="projects-grid">
@@ -70,9 +41,9 @@
                         <div class="avatar av-yellow">JD</div>
                         <div class="avatar av-pink">AL</div>
                     </div>
-                    <a href="modif_project.html" class="btn-add-collab">+ Collaborateur</a>
+                    <a href="{{ url('modif_project') }}" class="btn-add-collab">+ Collaborateur</a>
                 </div>
-                <a href="details_project.html" class="btn-project-details">+ de détails</a>
+                <a href="{{ url('details_project') }}" class="btn-project-details">+ de détails</a>
             </article>
 
             <article class="project-card">
@@ -99,9 +70,9 @@
                     <div class="avatars">
                         <div class="avatar av-blue">MR</div>
                     </div>
-                    <a href="modif_project.html" class="btn-add-collab">+ Collaborateur</a>
+                    <a href="{{ url('modif_project') }}" class="btn-add-collab">+ Collaborateur</a>
                 </div>
-                <a href="details_project.html" class="btn-project-details">+ de détails</a>
+                <a href="{{ url('details_project') }}" class="btn-project-details">+ de détails</a>
             </article>
 
             <article class="project-card">
@@ -134,9 +105,9 @@
                         <div class="avatar av-green">KT</div>
                         <div class="avatar av-purple">SS</div>
                     </div>
-                    <a href="modif_project.html" class="btn-add-collab">+ Collaborateur</a>
+                    <a href="{{ url('modif_project') }}" class="btn-add-collab">+ Collaborateur</a>
                 </div>
-                <a href="details_project.html" class="btn-project-details">+ de détails</a>
+                <a href="{{ url('details_project') }}" class="btn-project-details">+ de détails</a>
             </article>
 
         </div>

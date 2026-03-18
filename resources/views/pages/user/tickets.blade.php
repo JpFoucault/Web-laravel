@@ -1,161 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
-
+@include('pages.user.partials.head')
 
 <body>
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html" class="active">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'tickets'])
 
     <div class="content">
-        <div class="filter-section" style="margin-bottom: 20px;">
-            <p style="font-weight: 600; margin-bottom: 10px;">Filtrer par :</p>
+        <div class="filter-section" style="margin-bottom: 30px;">
+            <div class="page-actions">
+                <h1>Mes Demandes de Support</h1>
+                <a href="{{ route('tickets.create') }}" class="btn-create">+ Nouveau Ticket</a>
+            </div>
             
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
-                <button class="filter-btn btn-cancel" data-category="all">Tout voir</button>
-            </div>
-
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
-                <span style="align-self: center; font-size: 13px; color: #94a3b8;">État :</span>
-                <button class="filter-btn btn-cancel" data-category="status" data-value="Nouveau">Nouveau</button>
-                <button class="filter-btn btn-cancel" data-category="status" data-value="En cours">En cours</button>
-                <button class="filter-btn btn-cancel" data-category="status" data-value="Terminé">Terminé</button>
-            </div>
-
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <span style="align-self: center; font-size: 13px; color: #94a3b8;">Facturation :</span>
-                <button class="filter-btn btn-cancel" data-category="billable" data-value="Oui">Facturable</button>
-                <button class="filter-btn btn-cancel" data-category="billable" data-value="Non">Non facturable</button>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155;">
+                <div>
+                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 8px;">État :</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="filter-btn btn-cancel active" data-category="all">Tous</button>
+                        <button class="filter-btn btn-cancel" data-category="status" data-value="open">Nouveaux</button>
+                        <button class="filter-btn btn-cancel" data-category="status" data-value="pending">En cours</button>
+                        <button class="filter-btn btn-cancel" data-category="status" data-value="closed">Terminés</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="table-card">
-            <table class="ticket-table">
-                <thead>
-                    <tr>
-                        <th>Ticket & Projet</th>
-                        <th>Facturé</th> 
-                        <th>Date souhaitée</th>
-                        <th>Description</th>
-                        <th>État</th>
-                        <th class="text-right">
-                            <a href="create_tickets.html" class="btn-create">+ Nouveau Ticket</a>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="ticket-rows"> 
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Correction Bug Login</span>
-                                <span class="ticket-project">Projet E-Commerce</span>
-                            </div>
-                        </td>
-                        <td class="col-unbillable">Non</td> <td>05 Fév 2026</td>
-                        <td>Le bouton de connexion est décalé...</td>
-                        <td class="col-status"><span class="status-badge status-new">Nouveau</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Correction Bug Login</span>
-                                <span class="ticket-project">Projet E-Commerce</span>
-                            </div>
-                        </td>
-                        <td class="col-billable">Oui</td> <td>05 Fév 2026</td>
-                        <td>Le bouton de connexion est décalé...</td>
-                        <td class="col-status"><span class="status-badge status-progress">En cours</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Correction Bug Login</span>
-                                <span class="ticket-project">Projet E-Commerce</span>
-                            </div>
-                        </td>
-                        <td class="col-billable">Oui</td> <td>05 Fév 2026</td>
-                        <td>Le bouton de connexion est décalé...</td>
-                        <td class="col-status"><span class="status-badge status-new">Nouveau</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div id="popup-ticket-1" class="modal-overlay">
-            <div class="modal-content">
-                <a href="#" class="close-btn">&times;</a>
-                <div class="modal-header">
-                    <h2>Correction Bug Login</h2>
-                    <p>Projet : E-Commerce Bio</p>
-                </div>
-                <div class="modal-body">
-                    <div class="info-row">
-                        <span class="info-label">Statut :</span>
-                        <span class="modal-status-badge">NOUVEAU</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="info-label">Facturable :</span>
-                        <span class="info-value">Oui</span>
+        <div class="tickets-grid">
+            @forelse($tickets as $ticket)
+                <div class="project-card ticket-card" data-status="{{ $ticket->status }}">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="ticket-id" style="color: #818cf8; font-weight: bold; font-family: monospace;">#TICK-{{ str_pad($ticket->id, 4, '0', STR_PAD_LEFT) }}</span>
+                            <span class="status-badge status-{{ $ticket->status }}">
+                                {{ strtoupper($ticket->status) }}
+                            </span>
+                        </div>
+                        <h2 style="margin-top: 15px;">{{ $ticket->title }}</h2>
+                        <span class="client-name">Créé le {{ $ticket->created_at->format('d M Y') }}</span>
                     </div>
 
-                    <div class="info-row">
-                        <span class="info-label">Prix estimé :</span>
-                        <span class="info-value" style="font-weight: bold; color: #4ade80;">150.00 €</span>
+                    <div class="tickets-section">
+                        <h3>Détails</h3>
+                        <p style="font-size: 14px; color: #cbd5e1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            {{ $ticket->description }}
+                        </p>
                     </div>
 
-                    <div class="info-row">
-                        <span class="info-label">Date souhaitée :</span>
-                        <span class="info-value">05 Fév 2026</span>
-                    </div>
-                    
-                    <p class="info-label">Description détaillée :</p>
-                    <div class="description-box">
-                        Le bouton de connexion se chevauche avec le logo sur mobile.
+                    <div class="card-footer" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #334155;">
+                        <div class="meta-item">
+                            <span class="priority-badge priority-{{ $ticket->priority }}">
+                                Priorité {{ ucfirst($ticket->priority) }}
+                            </span>
+                        </div>
+                        <button class="btn-view" onclick="window.location.hash='popup-ticket-{{ $ticket->id }}'">Voir détails</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <a href="modif_tickets.html" class="btn-cancel btn-outline-primary">✎ Modifier le ticket</a>
-                    <a href="#" class="btn-modal-action">Fermer</a>
+
+                <div id="popup-ticket-{{ $ticket->id }}" class="modal-overlay">
+                    <div class="modal-content">
+                        <a href="#" class="close-btn">&times;</a>
+                        <div class="modal-header">
+                            <h2>{{ $ticket->title }}</h2>
+                            <p>Ticket #{{ $ticket->id }}</p>
+                        </div>
+                        <div class="modal-body">
+                            <div class="info-row">
+                                <span class="info-label">Statut :</span>
+                                <span class="status-badge status-{{ $ticket->status }}">{{ strtoupper($ticket->status) }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Priorité :</span>
+                                <span class="priority-text {{ $ticket->priority }}">{{ ucfirst($ticket->priority) }}</span>
+                            </div>
+                            <p class="info-label" style="margin-top: 20px;">Description détaillée :</p>
+                            <div class="description-box">
+                                {{ $ticket->description }}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn-modal-action">Fermer</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+            @empty
+                <div class="no-tickets" style="grid-column: 1 / -1; text-align: center; padding: 60px; background: #1e293b; border-radius: 12px; border: 1px dashed #334155;">
+                    <div style="font-size: 60px; margin-bottom: 20px;">🎫</div>
+                    <h2 style="color: #f8fafc;">Aucun ticket pour le moment</h2>
+                    <p style="color: #94a3b8; margin-bottom: 25px;">Vous n'avez aucune demande d'assistance en cours.</p>
+                    <a href="{{ route('tickets.create') }}" class="btn-create">Ouvrir un ticket</a>
+                </div>
+            @endforelse
         </div>
     </div>
-    <script src="./../javascript/filter_tickets.js"></script>
+    <script src="{{ asset('js/filter_tickets.js') }}"></script>
 </body>
 </html>

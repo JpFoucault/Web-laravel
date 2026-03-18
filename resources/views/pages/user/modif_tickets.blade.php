@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
+@include('pages.user.partials.head')
 
 <body>
     
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard.html">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html" class="active">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'tickets'])
 
     <div class="content_create_ticket">
         
@@ -108,7 +79,7 @@
                 <div class="form-actions">
                     <button type="button" class="btn-supr">Supprimer</button>
                     
-                    <a href="tickets.html" class="btn-cancel">Annuler</a>
+                    <a href="{{ url('tickets') }}" class="btn-cancel">Annuler</a>
                     <button type="submit" class="btn-submit">Enregistrer</button>
                 </div>
 
@@ -117,6 +88,6 @@
 
     </div>
 
-    <script src="./../javascript/modif_ticket.js"></script>
+    <script src="{{ asset('javascript/modif_ticket.js') }}"></script>
 </body>
 </html>

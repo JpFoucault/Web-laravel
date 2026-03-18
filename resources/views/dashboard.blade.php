@@ -17,13 +17,13 @@
 
         <nav class="main-nav">
             <ul>
-                <li><a href="dashboard.html" class="active">Tableau de bord</a></li>
-                <li><a href="project.html">Mes Projets</a></li>
-                <li><a href="tickets.html">Tickets</a></li>
-                <li><a href="bills.html">Facturation</a></li>
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="contacts.html">Contacts</a></li>
-                <li><a href="settings.html">Settings</a></li>
+                <li><a href="dashboard" class="active">Tableau de bord</a></li>
+                <li><a href="project">Mes Projets</a></li>
+                <li><a href="tickets">Tickets</a></li>
+                <li><a href="bills">Facturation</a></li>
+                <li><a href="documents">Documents</a></li>
+                <li><a href="contacts">Contacts</a></li>
+                <li><a href="settings">Settings</a></li>
             </ul>
         </nav>
 
