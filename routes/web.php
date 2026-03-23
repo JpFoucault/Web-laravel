@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,14 +18,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // --- Routes des Tickets ---
-    Route::get('/tickets', function() {
-        // Maintenant ça fonctionne car 'Auth' est importé
-        $tickets = Auth::user()->tickets()->latest()->get(); 
-        return view('pages.user.tickets', compact('tickets'));
-    })->name('tickets.index');
-    
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
     Route::get('/create-tickets', [TicketController::class, 'create'])->name('tickets.create');
     Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/tickets/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit');
+    Route::put('/tickets/{ticket}', [TicketController::class, 'update'])->name('tickets.update');
+    Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
+    Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
+    Route::post('/tickets/{ticket}/add-time', [TicketController::class, 'addTime'])->name('tickets.addTime');
 
     // J'AI SUPPRIMÉ LA LIGNE AUTHCONTROLLER ICI CAR AUTH.PHP S'EN CHARGE DÉJÀ.
 
@@ -41,14 +42,6 @@ Route::middleware('auth')->group(function () {
         return view('pages.user.contacts');
     });
 
-    Route::get('/create_new_project', function(){
-        return view('pages.user.create_new_project');
-    });
-
-    Route::get('/details_project', function(){
-        return view('pages.user.details_project');
-    });
-
     Route::get('/documents', function(){
         return view('pages.user.documents');
     });
@@ -57,9 +50,6 @@ Route::middleware('auth')->group(function () {
         return view('pages.user.modif_contacts');
     });
 
-    Route::get('/modif_project', function(){
-        return view('pages.user.modif_project');
-    });
 
     Route::get('/modif_tickets', function(){
         return view('pages.user.modif_tickets');
@@ -77,13 +67,20 @@ Route::middleware('auth')->group(function () {
         return view('pages.user.new_documents');
     });
 
-    Route::get('/project', function(){
-        return view('pages.user.project');
-    });
-
     Route::get('/settings', function(){
         return view('pages.user.settings');
     })->name('settings');
+// On force l'URL à "/project" mais on garde le nom de route "projets.index" pour ne pas casser tes vues
+    Route::get('/project', [ProjectController::class, 'index'])->name('projets.index');
+    Route::get('/project/create', [ProjectController::class, 'create'])->name('projets.create');
+    Route::post('/project', [ProjectController::class, 'store'])->name('projets.store');
+    Route::get('/project/{id}', [ProjectController::class, 'show'])->name('projets.show');
+    Route::get('/project/{id}/edit', [ProjectController::class, 'edit'])->name('projets.edit');
+    Route::put('/project/{id}', [ProjectController::class, 'update'])->name('projets.update');
+    Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('projets.destroy');
+    
+    // Ta route pour lier les tickets
+    Route::post('/project/{id}/link-ticket', [ProjectController::class, 'linkTicket'])->name('projets.link_ticket');
 });
 
 // C'est ce fichier qui contient déjà la vraie route 'logout' !

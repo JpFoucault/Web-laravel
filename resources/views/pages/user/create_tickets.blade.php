@@ -67,7 +67,32 @@
                 <textarea id="description" name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
                 @error('description') <div class="error-text">{{ $message }}</div> @enderror
             </div>
-
+            <div class="collabs-grid">
+                @foreach($users as $u)
+                    <div class="collab-option">
+                        <div class="avatar" style="width:36px;height:36px;font-size:13px;">
+                            {{ strtoupper(substr($u->name, 0, 2)) }}
+                        </div>
+                        <div class="collab-info">
+                            <strong style="color:#f1f5f9; font-size:13px;">{{ $u->name }}</strong>
+                            <select name="membres[{{ $loop->index }}][role]" class="form-control"
+                                    style="margin-top:4px; padding:3px 8px; font-size:12px;"
+                                    onchange="toggleMembre(this, {{ $u->id }})">
+                                <option value="">— Pas d'accès —</option>
+                                <option value="lecteur"
+                                    {{ isset($membresActuels[$u->id]) && $membresActuels[$u->id] === 'lecteur' ? 'selected' : '' }}>
+                                    👁 Lecteur
+                                </option>
+                                <option value="editeur"
+                                    {{ isset($membresActuels[$u->id]) && $membresActuels[$u->id] === 'editeur' ? 'selected' : '' }}>
+                                    ✏️ Éditeur
+                                </option>
+                            </select>
+                            <input type="hidden" name="membres[{{ $loop->index }}][id]" value="{{ $u->id }}">
+                        </div>
+                    </div>
+                @endforeach
+            </div>
             <div class="form-actions">
                 <a href="{{ route('tickets.index') }}" class="btn-cancel">Annuler</a>
                 <button type="submit" class="btn-submit">Créer le ticket</button>

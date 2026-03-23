@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('type', ['bug', 'feature', 'support'])->default('bug');
             $table->enum('priorite', ['low', 'medium', 'high', 'critical'])->default('medium');
             $table->date('delai')->nullable();
-            $table->foreignId('projet_id')->nullable()->constrained('projects');
+            $table->foreignId('projet_id')->nullable()->constrained('projets');
             $table->foreignId('createur_id')->constrained('users');
             $table->foreignId('assigne_a_id')->nullable()->constrained('users');
             $table->string('statut', 50)->default('Nouveau');

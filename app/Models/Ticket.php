@@ -3,30 +3,47 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ticket extends Model
 {
-    // Ajoute 'project_id' ici
     protected $fillable = [
-        'titre', 
-        'description', 
-        'type', 
-        'priorite', 
-        'delai', 
-        'projet_id', 
-        'createur_id', 
-        'assigne_a_id', 
-        'statut', 
-        'temps_passe'
+        'titre', 'description', 'type', 'priorite',
+        'delai', 'projet_id', 'createur_id',
+        'assigne_a_id', 'statut', 'temps_passe'
     ];
-    public function user(): BelongsTo
+
+    public function createur(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'createur_id');
     }
 
-    // Ajoute la relation avec le projet
-    public function project(): BelongsTo
+    // Tous les membres de l'équipe du ticket (table pivot)
+    public function membres(): BelongsToMany
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsToMany(User::class, 'ticket_user')
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
+
+    // Vérifie si un utilisateur peut voir ce ticket
+    public function estVisible(User $user): bool
+    {
+        if ($user->id === $this->createur_id) return true;
+        return $this->membres()->where('user_id', $user->id)->exists();
+    }
+
+    // Vérifie si un utilisateur peut modifier ce ticket
+    public function peutModifier(User $user): bool
+    {
+        if ($user->id === $this->createur_id) return true;
+        return $this->membres()
+                    ->where('user_id', $user->id)
+                    ->wherePivot('role', 'editeur')
+                    ->exists();
+    }
+    public function projet() {
+        return $this->belongsTo(Projet::class);
+    }
+
 }

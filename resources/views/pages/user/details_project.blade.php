@@ -1,265 +1,31 @@
-@include('pages.user.partials.head')
+@extends('layouts.app')
 
-<body>
-    @include('pages.user.partials.header', ['active' => 'project'])
-
-    <div class="content">
-        <div class="page-actions">
-            <div>
-                <a href="{{ url('project') }}" class="back-link">← Retour aux projets</a>
-                <h1>Site E-Commerce Bio</h1>
-            </div>
-            <a href="{{ url('modif_project') }}">
-                <button class="btn-create" onclick="">Modifier le projet</button>
-            </a>
+@section('content')
+<div class="content">
+    <div class="page-actions">
+        <div>
+            <a href="{{ route('projets.index') }}" class="back-link" style="color:#94a3b8; text-decoration:none;">← Retour</a>
+            <h1>{{ $projet->nom_projet }}</h1>
         </div>
+        @if(Auth::id() === $projet->createur_id)
+            <a href="{{ route('projets.edit', $projet->id) }}" class="btn-add-collab">Modifier</a>
+        @endif
+    </div>
 
-        <div class="form-card card-spacing">
-            <div class="contact-header project-header">
-                <div class="avatar avatar-large">EC</div>
-                <div>
-                    <h2>Site E-Commerce Bio</h2>
-                    <p>Client : GreenMarket SAS</p>
-                </div>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <span class="ci-label">Statut du projet</span>
-                    <span class="ci-value"><span class="status-badge status-progress">En cours</span></span>
-                </div>
-                <div class="contact-item">
-                    <span class="ci-label">Date de début</span>
-                    <span class="ci-value">15 janvier 2026</span>
-                </div>
-                <div class="contact-item">
-                    <span class="ci-label">Date de fin prévue</span>
-                    <span class="ci-value">30 mars 2026</span>
-                </div>
-                <div class="contact-item">
-                    <span class="ci-label">Budget total</span>
-                    <span class="ci-value">45 000 €</span>
-                </div>
-                <div class="contact-item">
-                    <span class="ci-label">Temps estimé</span>
-                    <span class="ci-value">320 heures</span>
-                </div>
-                <div class="contact-item">
-                    <span class="ci-label">Temps consommé</span>
-                    <span class="ci-value">187 heures (58%)</span>
-                </div>
-            </div>
-
-            <div class="section-spacing">
-                <span class="section-title">Description du projet</span>
-                <div class="contact-item">
-                    <p class="description-text">
-                        Développement d'une plateforme e-commerce complète pour la vente de produits biologiques. 
-                        Le projet inclut la création d'un catalogue de produits, un système de panier d'achat, 
-                        l'intégration de paiement en ligne avec Stripe, et un back-office de gestion des commandes.
-                        L'objectif est de créer une expérience utilisateur fluide et moderne tout en respectant 
-                        les contraintes de sécurité et de performance.
-                    </p>
-                </div>
-            </div>
-
-            <div class="section-spacing">
-                <span class="section-title">Technologies</span>
-                <div class="tech-badges">
-                    <span class="company-badge">React</span>
-                    <span class="company-badge">Node.js</span>
-                    <span class="company-badge">MongoDB</span>
-                    <span class="company-badge">Stripe API</span>
-                    <span class="company-badge">AWS</span>
-                    <span class="company-badge">Docker</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-card card-spacing">
-            <h2 class="section-header h2">Équipe du projet</h2>
-            
-            <div class="team-grid">
-                <div class="contact-item">
-                    <div class="team-member">
-                        <div class="avatar av-yellow">JD</div>
-                        <div>
-                            <div class="member-name">Jean Dupont</div>
-                            <div class="member-role">Chef de projet</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-item">
-                    <div class="team-member">
-                        <div class="avatar av-pink">AL</div>
-                        <div>
-                            <div class="member-name">Alice Lefebvre</div>
-                            <div class="member-role">Développeur Full-Stack</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <a href="{{ url('modif_project') }}" class="btn-add-collab inline-block-link">+ Ajouter un collaborateur</a>
-        </div>
-
-        <div class="form-card card-spacing">
-            <div class="section-header">
-                <h2>Tickets du projet</h2>
-                <a href="{{ url('create_tickets') }}" class="btn-create">+ Nouveau ticket</a>
-            </div>
-
-            <div class="table-card">
-                <table class="ticket-table">
-                    <thead>
-                        <tr>
-                            <th>Ticket</th>
-                            <th>Priorité</th>
-                            <th>Statut</th>
-                            <th>Assigné à</th>
-                            <th>Date création</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="ticket-info">
-                                    <span class="ticket-title">Bug ajout panier</span>
-                                    <span class="ticket-project">Problème lors de l'ajout de produits</span>
-                                </div>
-                            </td>
-                            <td><span class="priority-badge priority-high">Haute</span></td>
-                            <td><span class="status-badge status-new">Nouveau</span></td>
-                            <td>
-                                <div class="assigned-user">
-                                    <div class="avatar av-pink avatar-small">AL</div>
-                                    <span>Alice Lefebvre</span>
-                                </div>
-                            </td>
-                            <td>05 fév. 2026</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="ticket-info">
-                                    <span class="ticket-title">Intégration Stripe</span>
-                                    <span class="ticket-project">Configuration du système de paiement</span>
-                                </div>
-                            </td>
-                            <td><span class="priority-badge priority-high">Haute</span></td>
-                            <td><span class="status-badge status-progress">En cours</span></td>
-                            <td>
-                                <div class="assigned-user">
-                                    <div class="avatar av-yellow avatar-small">JD</div>
-                                    <span>Jean Dupont</span>
-                                </div>
-                            </td>
-                            <td>28 jan. 2026</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="ticket-info">
-                                    <span class="ticket-title">Mise en prod v1.0</span>
-                                    <span class="ticket-project">Déploiement de la première version</span>
-                                </div>
-                            </td>
-                            <td><span class="priority-badge priority-medium">Moyenne</span></td>
-                            <td><span class="status-badge status-done">Terminé</span></td>
-                            <td>
-                                <div class="assigned-user">
-                                    <div class="avatar av-yellow avatar-small">JD</div>
-                                    <span>Jean Dupont</span>
-                                </div>
-                            </td>
-                            <td>20 jan. 2026</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="form-card card-spacing">
-            <h2 class="section-header h2">Statistiques</h2>
-            
-            <div class="stats-grid">
-                <div class="contact-item stat-box">
-                    <span class="ci-label">Total tickets</span>
-                    <div class="stat-number primary">12</div>
-                </div>
-                <div class="contact-item stat-box">
-                    <span class="ci-label">En cours</span>
-                    <div class="stat-number warning">5</div>
-                </div>
-                <div class="contact-item stat-box">
-                    <span class="ci-label">Terminés</span>
-                    <div class="stat-number success">7</div>
-                </div>
-                <div class="contact-item stat-box">
-                    <span class="ci-label">Progression</span>
-                    <div class="stat-number primary">58%</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-card">
-            <div class="section-header">
-                <h2>Documents du projet</h2>
-                <a href="{{ url('new_documents') }}" class="btn-create">+ Ajouter un document</a>
-            </div>
-
-            <div class="table-card">
-                <table class="ticket-table">
-                    <thead>
-                        <tr>
-                            <th>Nom du fichier</th>
-                            <th>Type</th>
-                            <th>Taille</th>
-                            <th>Ajouté le</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="file-name-cell">
-                                    <div class="file-icon icon-pdf">PDF</div>
-                                    <div class="file-details">
-                                        <span class="file-name">Cahier des charges.pdf</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Document</td>
-                            <td>2.4 MB</td>
-                            <td>15 jan. 2026</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="file-name-cell">
-                                    <div class="file-icon icon-img">IMG</div>
-                                    <div class="file-details">
-                                        <span class="file-name">Maquette_Homepage.png</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Image</td>
-                            <td>1.8 MB</td>
-                            <td>18 jan. 2026</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="file-name-cell">
-                                    <div class="file-icon icon-doc">DOC</div>
-                                    <div class="file-details">
-                                        <span class="file-name">Specifications_techniques.docx</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Document</td>
-                            <td>856 KB</td>
-                            <td>22 jan. 2026</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div id="modal-link-ticket" class="modal-overlay">
+        <div class="modal-content">
+            <a href="#" class="close-btn">&times;</a>
+            <form action="{{ route('projets.link_ticket', $projet->id) }}" method="POST">
+                @csrf
+                <select name="ticket_id" class="form-control" required>
+                    <option value="" disabled selected>-- Sélectionner --</option>
+                    @foreach($free_tickets as $ft)
+                        <option value="{{ $ft->id }}">#{{ $ft->id }} - {{ $ft->titre }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn-submit">Lier au projet</button>
+            </form>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection
