@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Models\Project;
+use App\Models\Projet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +14,6 @@ class TicketController extends Controller
     {
         $user = Auth::user();
 
-        // Tickets créés PAR l'user + tickets où il est membre
         $tickets = Ticket::where('createur_id', $user->id)
             ->orWhereHas('membres', fn($q) => $q->where('user_id', $user->id))
             ->with(['project', 'membres'])
@@ -26,11 +25,12 @@ class TicketController extends Controller
 
     public function create()
     {
-        $projects = Project::all();
-        $users    = User::where('id', '!=', auth()->id())->get();
+        $projects = \App\Models\Projet::all(); 
+
+        $users = \App\Models\User::where('id', '!=', auth()->id())->get();
+
         return view('pages.user.create_tickets', compact('projects', 'users'));
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -40,6 +40,7 @@ class TicketController extends Controller
             'priorite'    => 'required|in:low,medium,high,critical',
             'delai'       => 'nullable|date',
             'projet_id'   => 'nullable|exists:projets,id',
+            'assigne_a_id' => 'nullable|exists:users,id',
             'membres'     => 'nullable|array',
             'membres.*.id'   => 'exists:users,id',
             'membres.*.role' => 'in:lecteur,editeur',
@@ -50,11 +51,12 @@ class TicketController extends Controller
 
         $ticket = Ticket::create($validated);
 
-        // Attacher les membres avec leur rôle
         if (!empty($request->membres)) {
             $syncData = [];
             foreach ($request->membres as $membre) {
-                $syncData[$membre['id']] = ['role' => $membre['role']];
+                if (!empty($membre['role'])) {
+                    $syncData[$membre['id']] = ['role' => $membre['role']];
+                }
             }
             $ticket->membres()->sync($syncData);
         }
@@ -66,8 +68,8 @@ class TicketController extends Controller
     {
         abort_if(!$ticket->peutModifier(auth()->user()), 403);
 
-        $projects = Project::all();
-        $users    = User::where('id', '!=', auth()->id())->get();
+        $projects = Projet::all();  // ← variable $projects
+        $users = User::where('id', '!=', auth()->id())->get();
         $membresActuels = $ticket->membres()->pluck('role', 'users.id');
 
         return view('pages.user.modif_tickets', compact('ticket', 'projects', 'users', 'membresActuels'));
@@ -85,6 +87,7 @@ class TicketController extends Controller
             'statut'      => 'required|string',
             'delai'       => 'nullable|date',
             'projet_id'   => 'nullable|exists:projets,id',
+            'assigne_a_id' => 'nullable|exists:users,id',
             'membres'     => 'nullable|array',
             'membres.*.id'   => 'exists:users,id',
             'membres.*.role' => 'in:lecteur,editeur',
@@ -92,10 +95,11 @@ class TicketController extends Controller
 
         $ticket->update($validated);
 
-        // Re-synchroniser les membres
         $syncData = [];
         foreach ($request->membres ?? [] as $membre) {
-            $syncData[$membre['id']] = ['role' => $membre['role']];
+            if (!empty($membre['role'])) {
+                $syncData[$membre['id']] = ['role' => $membre['role']];
+            }
         }
         $ticket->membres()->sync($syncData);
 
@@ -111,23 +115,16 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
-        // Sécurité : seuls les membres et le créateur peuvent voir
         abort_if(!$ticket->estVisible(auth()->user()), 403);
-
-        // Charge les relations utiles pour la page
-        $ticket->load(['project', 'createur', 'membres']);
-
+        $ticket->load(['project', 'createur', 'membres', 'assigneA']);
         return view('pages.user.ticket_detail', compact('ticket'));
     }
 
     public function addTime(Request $request, Ticket $ticket)
     {
         abort_if(!$ticket->estVisible(auth()->user()), 403);
-
         $request->validate(['heures' => 'required|integer|min:1']);
-
         $ticket->increment('temps_passe', $request->heures);
-
         return redirect()->route('tickets.show', $ticket)->with('time_added', true);
     }
 }

@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     public function logout(Request $request)
@@ -56,7 +56,7 @@ class AuthenticatedSessionController extends Controller
         // 3. Régénère le jeton CSRF (sécurité)
         $request->session()->regenerateToken();
 
-        // 4. Redirige vers la page d'accueil ou de connexion
-        return redirect('/');
+        // 4. Redirige vers la page de connexion
+        return redirect()->route('login');
     }
 }

@@ -75,6 +75,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="assigne_a_id">Assigné à</label>
+                    <select id="assigne_a_id" name="assigne_a_id" class="form-control">
+                        <option value="">— Non assigné —</option>
+                        @foreach($users as $u)
+                            <option value="{{ $u->id }}"
+                                {{ old('assigne_a_id', $ticket->assigne_a_id) == $u->id ? 'selected' : '' }}>
+                                {{ $u->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="description">Description <span class="text-required">*</span></label>
                     <textarea id="description" name="description" class="form-control" rows="5" required>{{ old('description', $ticket->description) }}</textarea>
                     @error('description') <div class="error-text">{{ $message }}</div> @enderror

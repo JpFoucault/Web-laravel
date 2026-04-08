@@ -5,7 +5,6 @@
 
     <div class="content">
 
-        {{-- En-tête de page --}}
         <div class="page-actions">
             <div>
                 <a href="{{ route('tickets.index') }}" style="color:#94a3b8; text-decoration:none;">
@@ -19,10 +18,8 @@
             @endif
         </div>
 
-        {{-- Carte principale --}}
         <div class="detail-card">
 
-            {{-- Grille d'infos --}}
             <div class="info-grid">
                 <div class="info-item">
                     <label>Type de demande</label>
@@ -36,6 +33,7 @@
 
                 <div class="info-item">
                     <label>Projet</label>
+                    {{-- ← WAS $ticket->project, NOW $ticket->projet --}}
                     <span>{{ $ticket->project?->nom_projet ?? 'Aucun projet' }}</span>
                 </div>
 
@@ -48,7 +46,15 @@
 
                 <div class="info-item">
                     <label>Statut actuel</label>
-                    <span class="status-badge status-{{ Str::slug($ticket->statut) }}">
+                    @php
+                        $statusClass = match($ticket->statut) {
+                            'En cours'  => 'status-progress',
+                            'Terminé'   => 'status-done',
+                            'En revue'  => 'status-progress',
+                            default     => 'status-new',
+                        };
+                    @endphp
+                    <span class="status-badge {{ $statusClass }}">
                         {{ $ticket->statut }}
                     </span>
                 </div>
@@ -66,7 +72,6 @@
                 </div>
             </div>
 
-            {{-- Description --}}
             <div style="margin-bottom: 30px;">
                 <label style="color:#94a3b8; font-size:12px; text-transform:uppercase;">Description</label>
                 <div class="description-box" style="margin-top:10px;">
@@ -74,7 +79,6 @@
                 </div>
             </div>
 
-            {{-- Suivi du temps --}}
             <div class="detail-card" style="margin-bottom: 20px;">
                 <h3 style="margin-top:0; font-size:16px; color:#f8fafc;">⏱ Suivi du temps</h3>
 
@@ -98,11 +102,15 @@
                 </form>
             </div>
 
-            {{-- Créateur + Membres --}}
             <div class="info-grid">
                 <div class="info-item">
                     <label>Créé par</label>
                     <span>{{ $ticket->createur?->name ?? 'Inconnu' }}</span>
+                </div>
+
+                <div class="info-item">
+                    <label>Assigné à</label>
+                    <span>{{ $ticket->assigneA?->name ?? '—' }}</span>
                 </div>
 
                 <div class="info-item">
@@ -122,9 +130,8 @@
                 </div>
             </div>
 
-        </div>{{-- fin .detail-card --}}
+        </div>
 
-        {{-- Bouton supprimer (créateur uniquement) --}}
         @if($ticket->createur_id === auth()->id())
             <div style="margin-top:20px; text-align:right;">
                 <form action="{{ route('tickets.destroy', $ticket) }}" method="POST"

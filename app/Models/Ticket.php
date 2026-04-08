@@ -42,8 +42,13 @@ class Ticket extends Model
                     ->wherePivot('role', 'editeur')
                     ->exists();
     }
-    public function projet() {
-        return $this->belongsTo(Projet::class);
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Projet::class, 'projet_id');
     }
 
+    public function assigneA(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigne_a_id');
+    }
 }

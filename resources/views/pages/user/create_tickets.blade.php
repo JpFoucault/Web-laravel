@@ -1,12 +1,9 @@
 @include('pages.user.partials.head')
 
-
 <body>
-    
     @include('pages.user.partials.header', ['active' => 'tickets'])
 
     <div class="content_create_ticket">
-        
         <div class="form-card">
             <div class="form-header">
                 <h1>Créer un nouveau ticket</h1>
@@ -18,7 +15,8 @@
 
             <div class="form-group">
                 <label for="titre">Sujet de la demande <span class="text-required">*</span></label>
-                <input type="text" id="titre" name="titre" class="form-control" value="{{ old('titre') }}" placeholder="Ex: Erreur lors du paiement...">
+                <input type="text" id="titre" name="titre" class="form-control"
+                       value="{{ old('titre') }}" placeholder="Ex: Erreur lors du paiement...">
                 @error('titre') <div class="error-text">{{ $message }}</div> @enderror
             </div>
 
@@ -51,13 +49,12 @@
 
                 <div class="form-group">
                     <label for="projet_id">Projet concerné</label>
+                    {{-- ← Balise <select> unique (avant il y en avait 2 imbriquées) --}}
                     <select id="projet_id" name="projet_id" class="form-control">
                         <option value="">-- Sélectionner un projet --</option>
-                        <select name="projet_id" class="form-control">
                         @foreach($projects as $project)
                             <option value="{{ $project->id }}">{{ $project->nom_projet }}</option>
                         @endforeach
-                    
                     </select>
                 </div>
             </div>
@@ -67,41 +64,42 @@
                 <textarea id="description" name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
                 @error('description') <div class="error-text">{{ $message }}</div> @enderror
             </div>
-            <div class="collabs-grid">
-                @foreach($users as $u)
-                    <div class="collab-option">
-                        <div class="avatar" style="width:36px;height:36px;font-size:13px;">
-                            {{ strtoupper(substr($u->name, 0, 2)) }}
+
+            {{-- Équipe du ticket --}}
+            @if(count($users) > 0)
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Équipe du ticket (optionnel)</label>
+                <p style="color:#94a3b8; font-size:13px; margin-bottom:10px;">
+                    Les utilisateurs sélectionnés auront accès à ce ticket.
+                </p>
+                <div class="collabs-grid">
+                    @foreach($users as $u)
+                        <div class="collab-option">
+                            <div class="avatar" style="width:36px;height:36px;font-size:13px;">
+                                {{ strtoupper(substr($u->name, 0, 2)) }}
+                            </div>
+                            <div class="collab-info">
+                                <strong style="color:#f1f5f9; font-size:13px;">{{ $u->name }}</strong>
+                                <select name="membres[{{ $loop->index }}][role]" class="form-control"
+                                        style="margin-top:4px; padding:3px 8px; font-size:12px;">
+                                    <option value="">— Pas d'accès —</option>
+                                    <option value="lecteur">👁 Lecteur</option>
+                                    <option value="editeur">✏️ Éditeur</option>
+                                </select>
+                                <input type="hidden" name="membres[{{ $loop->index }}][id]" value="{{ $u->id }}">
+                            </div>
                         </div>
-                        <div class="collab-info">
-                            <strong style="color:#f1f5f9; font-size:13px;">{{ $u->name }}</strong>
-                            <select name="membres[{{ $loop->index }}][role]" class="form-control"
-                                    style="margin-top:4px; padding:3px 8px; font-size:12px;"
-                                    onchange="toggleMembre(this, {{ $u->id }})">
-                                <option value="">— Pas d'accès —</option>
-                                <option value="lecteur"
-                                    {{ isset($membresActuels[$u->id]) && $membresActuels[$u->id] === 'lecteur' ? 'selected' : '' }}>
-                                    👁 Lecteur
-                                </option>
-                                <option value="editeur"
-                                    {{ isset($membresActuels[$u->id]) && $membresActuels[$u->id] === 'editeur' ? 'selected' : '' }}>
-                                    ✏️ Éditeur
-                                </option>
-                            </select>
-                            <input type="hidden" name="membres[{{ $loop->index }}][id]" value="{{ $u->id }}">
-                        </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
+            @endif
+
             <div class="form-actions">
                 <a href="{{ route('tickets.index') }}" class="btn-cancel">Annuler</a>
                 <button type="submit" class="btn-submit">Créer le ticket</button>
             </div>
         </form>
         </div>
-
     </div>
-
-    <script src="{{ asset('javascript/create_ticket.js') }}"></script>
 </body>
 </html>

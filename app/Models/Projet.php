@@ -9,8 +9,16 @@ class Projet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_projet', 'description', 'date_debut', 'date_fin', 'budget', 
-        'client_name', 'statut', 'temps_estime', 'technologies', 'createur_id'
+        'nom_projet',
+        'client_name',
+        'statut',
+        'description',
+        'date_debut',
+        'date_fin',
+        'budget',
+        'temps_estime',
+        'technologies',
+        'createur_id',
     ];
 
     public function createur() {
@@ -18,7 +26,7 @@ class Projet extends Model
     }
 
     public function collaborateurs() {
-        return $this->belongsToMany(User::class, 'projet_user');
+        return $this->belongsToMany(User::class, 'projet_user', 'projet_id', 'user_id');
     }
 
     public function tickets() {

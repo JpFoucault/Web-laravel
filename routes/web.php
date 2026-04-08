@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FactureController;
+use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,50 +30,44 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/{ticket}', [TicketController::class, 'show'])->name('tickets.show');
     Route::post('/tickets/{ticket}/add-time', [TicketController::class, 'addTime'])->name('tickets.addTime');
 
-    // J'AI SUPPRIMÉ LA LIGNE AUTHCONTROLLER ICI CAR AUTH.PHP S'EN CHARGE DÉJÀ.
-
-    // --- Autres vues statiques ---
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // --- Dashboard ---
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::get('/bills', function(){
-        return view('pages.user.bills');
-    });
+    // --- Routes des Factures ---
+    Route::get('/bills', [FactureController::class, 'index'])->name('bills');
+    Route::get('/factures/create', [FactureController::class, 'create'])->name('factures.create');
+    Route::post('/factures', [FactureController::class, 'store'])->name('factures.store');
+    Route::get('/factures/{facture}/edit', [FactureController::class, 'edit'])->name('factures.edit');
+    Route::put('/factures/{facture}', [FactureController::class, 'update'])->name('factures.update');
+    Route::get('/factures/{facture}/download', [FactureController::class, 'download'])->name('factures.download');
+    Route::delete('/factures/{facture}', [FactureController::class, 'destroy'])->name('factures.destroy');
 
-    Route::get('/contacts', function(){
-        return view('pages.user.contacts');
-    });
-
+    // --- Routes des Documents ---
     Route::get('/documents', function(){
-        return view('pages.user.documents');
-    });
+        $documents = \App\Models\Document::where('user_id', auth()->id())->latest()->get();
+        return view('pages.user.documents', compact('documents'));
+    })->name('documents.index');
+    Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
+    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}/edit', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::put('/documents/{document}', [DocumentController::class, 'update'])->name('documents.update');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
-    Route::get('/modif_contacts', function(){
-        return view('pages.user.modif_contacts');
-    });
+    // --- Routes des Contacts ---
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+    Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
+    Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+    Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
-
-    Route::get('/modif_tickets', function(){
-        return view('pages.user.modif_tickets');
-    });
-
-    Route::get('/new_bills', function(){
-        return view('pages.user.new_bills');
-    });
-
-    Route::get('/new_contacts', function(){
-        return view('pages.user.new_contacts');
-    });
-
-    Route::get('/new_documents', function(){
-        return view('pages.user.new_documents');
-    });
 
     Route::get('/settings', function(){
         return view('pages.user.settings');
     })->name('settings');
-// On force l'URL à "/project" mais on garde le nom de route "projets.index" pour ne pas casser tes vues
+
+    // --- Routes des Projets ---
     Route::get('/project', [ProjectController::class, 'index'])->name('projets.index');
     Route::get('/project/create', [ProjectController::class, 'create'])->name('projets.create');
     Route::post('/project', [ProjectController::class, 'store'])->name('projets.store');
@@ -78,10 +75,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/project/{id}/edit', [ProjectController::class, 'edit'])->name('projets.edit');
     Route::put('/project/{id}', [ProjectController::class, 'update'])->name('projets.update');
     Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('projets.destroy');
-    
-    // Ta route pour lier les tickets
-    Route::post('/project/{id}/link-ticket', [ProjectController::class, 'linkTicket'])->name('projets.link_ticket');
 });
 
-// C'est ce fichier qui contient déjà la vraie route 'logout' !
 require __DIR__.'/auth.php';

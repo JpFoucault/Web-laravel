@@ -1,162 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlowDesk</title>
-    <link rel="stylesheet" href="./../styles.css" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./../assets/Onlylogo.png">
-</head>
-
+@include('pages.user.partials.head')
 
 <body>
-    <header class="main-header">
-        <div class="logo-container">
-            <a href="dashboard.html"><img src="./../assets/FlowDesklogo.png" alt="Logo FlowDesk" class="logo-img"></a>
-        </div>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="dashboard" class="active">Tableau de bord</a></li>
-                <li><a href="project">Mes Projets</a></li>
-                <li><a href="tickets">Tickets</a></li>
-                <li><a href="bills">Facturation</a></li>
-                <li><a href="documents">Documents</a></li>
-                <li><a href="contacts">Contacts</a></li>
-                <li><a href="settings">Settings</a></li>
-            </ul>
-        </nav>
-
-        <div class="user-profile">
-            <span>user</span>
-            <div class="avatar">U</div>
-        </div>
-    </header>
+    @include('pages.user.partials.header', ['active' => 'dashboard'])
 
     <div class="content">
-        <h1>Bienvenue sur votre espace Projets</h1>
+        <h1>Bienvenue, {{ auth()->user()->name }}</h1>
         <br>
-        
+
         <div class="Stat">
             <div class="Info">
                 <ul>
                     <li class="box">
                         <h1>Projets</h1>
-                        <h2>34</h2>
+                        <h2>{{ $projetsCount }}</h2>
                     </li>
                     <li class="box">
                         <h1>Tickets</h1>
-                        <h2>128</h2>
+                        <h2>{{ $ticketsCount }}</h2>
                     </li>
                     <li class="box">
-                        <h1>Bills</h1>
-                        <h2>67€</h2>
+                        <h1>Heures log</h1>
+                        <h2>{{ $heuresTotal }}h</h2>
                     </li>
                 </ul>
             </div>
         </div>
-        
-        <div class="table-card">
-            <div class="card-header-padding">
-                <h2>Vos tickets récents</h2>
+
+        <div class="table-card" style="margin-bottom: 30px;">
+            <div class="card-header-padding" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Tickets récents</h2>
+                <a href="{{ route('tickets.index') }}" class="btn-add-collab">Voir tous</a>
             </div>
             <table class="ticket-table">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Ticket & Projet</th>
-                        <th>Description</th>
+                        <th>Priorité</th>
                         <th>État</th>
-                        <th class="text-right">Plus d'informations</th>
+                        <th class="text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Correction Bug Login</span>
-                                <span class="ticket-project">Projet E-Commerce</span>
-                            </div>
-                        </td>
-                        <td>Le bouton de connexion est décalé sur mobile...</td>
-                        <td><span class="status-badge status-new">Nouveau</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Mise à jour Base de données</span>
-                                <span class="ticket-project">Projet CRM Interne</span>
-                            </div>
-                        </td>
-                        <td>Migration des données clients vers la v2...</td>
-                        <td><span class="status-badge status-progress">En cours</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="ticket-info">
-                                <span class="ticket-title">Refonte Header</span>
-                                <span class="ticket-project">Projet Site Vitrine</span>
-                            </div>
-                        </td>
-                        <td>Intégration du nouveau logo et menus...</td>
-                        <td><span class="status-badge status-done">Terminé</span></td>
-                        <td class="text-right">
-                            <a href="#popup-ticket-1" class="btn-details">Plus de détails</a>
-                        </td>
-                    </tr>
+                    @forelse($ticketsRecents as $ticket)
+                        @php
+                            $statusClass = match($ticket->statut) {
+                                'En cours' => 'status-progress',
+                                'Terminé'  => 'status-done',
+                                'En revue' => 'status-progress',
+                                default    => 'status-new',
+                            };
+                            $priorityClass = match($ticket->priorite) {
+                                'high'     => 'priority-high',
+                                'critical' => 'priority-high',
+                                'medium'   => 'priority-medium',
+                                default    => 'priority-low',
+                            };
+                        @endphp
+                        <tr>
+                            <td style="color: #818cf8; font-weight: bold; font-family: monospace;">
+                                #TICK-{{ str_pad($ticket->id, 4, '0', STR_PAD_LEFT) }}
+                            </td>
+                            <td>
+                                <div class="ticket-info">
+                                    <span class="ticket-title">{{ $ticket->titre }}</span>
+                                    <span class="ticket-project">{{ $ticket->project?->nom_projet ?? 'Aucun projet' }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="priority-badge {{ $priorityClass }}">{{ ucfirst($ticket->priorite) }}</span>
+                            </td>
+                            <td>
+                                <span class="status-badge {{ $statusClass }}">{{ strtoupper($ticket->statut) }}</span>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{ route('tickets.show', $ticket) }}" class="btn-details">Voir</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">
+                                Aucun ticket pour le moment.
+                                <a href="{{ route('tickets.create') }}" style="color: #818cf8; margin-left: 8px;">Créer un ticket →</a>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
-    </div>
-
-    <div id="popup-ticket-1" class="modal-overlay">
-        <div class="modal-content">
-            
-            <a href="#" class="close-btn">&times;</a>
-
-            <div class="modal-header">
-                <h2>Correction Bug Login</h2>
-                <p>Projet : E-Commerce Bio</p>
+        <div class="table-card">
+            <div class="card-header-padding" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Projets récents</h2>
+                <a href="{{ route('projets.index') }}" class="btn-add-collab">Voir tous</a>
             </div>
-
-            <div class="modal-body">
-                <div class="info-row">
-                    <span class="info-label">Statut :</span>
-                    <span class="modal-status-badge">NOUVEAU</span>
-                </div>
-                
-                <div class="info-row">
-                    <span class="info-label">Demandé par :</span>
-                    <span class="info-value">Sophie Martin (Client)</span>
-                </div>
-                
-                <div class="info-row">
-                    <span class="info-label">Date :</span>
-                    <span class="info-value">30 Janvier 2026</span>
-                </div>
-
-                <p class="info-label">Description détaillée :</p>
-                <div class="description-box">
-                    Bonjour,<br><br>
-                    Sur la version mobile (iPhone 14), le bouton de connexion se chevauche avec le logo. Il est impossible de cliquer dessus.<br>
-                    Le problème semble venir du CSS sur les écrans inférieur à 400px.<br><br>
-                    Merci de corriger rapidement avant la mise en prod.
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <a href="#" class="btn-modal-action">Fermer</a>
-            </div>
-
+            <table class="ticket-table">
+                <thead>
+                    <tr>
+                        <th>Projet</th>
+                        <th>Client</th>
+                        <th>Budget</th>
+                        <th>État</th>
+                        <th class="text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($projetsRecents as $projet)
+                        @php
+                            $pStatusClass = match($projet->statut) {
+                                'en cours'  => 'status-progress',
+                                'terminé'   => 'status-done',
+                                'en pause'  => 'status-new',
+                                default     => 'status-new',
+                            };
+                        @endphp
+                        <tr>
+                            <td>
+                                <div class="ticket-info">
+                                    <span class="ticket-title">{{ $projet->nom_projet }}</span>
+                                    <span class="ticket-project">Créé le {{ $projet->created_at->format('d M Y') }}</span>
+                                </div>
+                            </td>
+                            <td>{{ $projet->client_name ?? '—' }}</td>
+                            <td>{{ $projet->budget ? number_format($projet->budget, 0, ',', ' ') . ' €' : '—' }}</td>
+                            <td>
+                                <span class="status-badge {{ $pStatusClass }}">{{ strtoupper($projet->statut) }}</span>
+                            </td>
+                            <td class="text-right">
+                                <a href="{{ route('projets.show', $projet->id) }}" class="btn-details">Voir</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 30px; color: #94a3b8;">
+                                Aucun projet pour le moment.
+                                <a href="{{ route('projets.create') }}" style="color: #818cf8; margin-left: 8px;">Créer un projet →</a>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
     </div>
 </body>
 </html>

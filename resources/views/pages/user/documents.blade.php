@@ -1,110 +1,94 @@
 @include('pages.user.partials.head')
 
-
 <body>
-    
     @include('pages.user.partials.header', ['active' => 'documents'])
 
     <div class="content">
-        
+
+        {{-- ===== SECTION DOCUMENTS ===== --}}
         <div class="page-actions">
-            <h1>Documents & Fichiers</h1>
-            <a href="{{ url('new_documents') }}" class="btn-create">Importer un fichier</a>
+            <h1>Documents</h1>
+            <a href="{{ route('documents.create') }}" class="btn-create">+ Déposer un document</a>
         </div>
 
+        <div class="filter-section" style="margin-bottom: 20px;">
+            <p style="font-weight: 600; margin-bottom: 10px;">Filtrer par :</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                <button class="filter-btn btn-cancel" data-category="all">Tout voir</button>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <span style="align-self: center; font-size: 13px; color: #94a3b8;">État :</span>
+                <button class="filter-btn btn-cancel" data-value="payee">Payée</button>
+                <button class="filter-btn btn-cancel" data-value="en cours">En cours</button>
+                <button class="filter-btn btn-cancel" data-value="cancel">Cancel</button>
+            </div>
+        </div>
+
+        @if(session('success'))
+            <p style="color: #4ade80; margin-bottom: 12px;">{{ session('success') }}</p>
+        @endif
+
         <div class="table-card">
-            <table class="ticket-table"> <thead>
+            <table class="ticket-table">
+                <thead>
                     <tr>
-                        <th>Nom du fichier</th>
-                        <th>Projet / Contexte</th>
-                        <th>Date d'ajout</th>
-                        <th>Propriétaire</th>
+                        <th>Nom du document</th>
+                        <th>Fichier</th>
+                        <th>État</th>
+                        <th>Déposé le</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    <tr>
-                        <td>
-                            <div class="file-name-cell">
-                                <div class="file-icon icon-pdf">PDF</div>
-                                <div class="file-details">
-                                    <span class="file-name">Cahier_des_charges_v2.pdf</span>
-                                    <span class="file-size">2.4 Mo</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="company-badge">Site E-Commerce Bio</span></td>
-                        <td>30 Jan 2026</td>
-                        <td>Sophie Martin</td>
-                        <td class="text-right">
-                            <a href="#" class="btn-details">Télécharger</a>
-                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
-                        </td>
-                    </tr>
+                    @forelse($documents as $document)
+                        @php
+                            // On choisit la classe CSS du badge selon le statut
+                            $badgeClass = match($document->statut) {
+                                'payee'    => 'status-done',
+                                'cancel'   => 'status-cancel',
+                                default    => 'status-progress',
+                            };
+                            $badgeLabel = match($document->statut) {
+                                'payee'    => 'Payée',
+                                'cancel'   => 'Cancel',
+                                default    => 'En cours',
+                            };
+                        @endphp
+                        <tr data-statut="{{ $document->statut }}">
+                            <td><strong>{{ $document->nom_document }}</strong></td>
+                            <td style="color: #94a3b8; font-size: 13px;">{{ $document->nom_fichier }}</td>
+                            <td><span class="status-badge {{ $badgeClass }}">{{ $badgeLabel }}</span></td>
+                            <td>{{ $document->created_at->format('d M Y') }}</td>
+                            <td class="text-right">
+                                <a href="{{ route('documents.download', $document) }}"
+                                   class="btn-details" target="_blank">Télécharger</a>
 
-                    <tr>
-                        <td>
-                            <div class="file-name-cell">
-                                <div class="file-icon icon-img">JPG</div>
-                                <div class="file-details">
-                                    <span class="file-name">Maquette_Homepage_Dark.jpg</span>
-                                    <span class="file-size">4.8 Mo</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="company-badge">App Mobile Livraison</span></td>
-                        <td>28 Jan 2026</td>
-                        <td>Alice L.</td>
-                        <td class="text-right">
-                            <a href="#" class="btn-details">Télécharger</a>
-                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
-                        </td>
-                    </tr>
+                                <a href="{{ route('documents.edit', $document) }}"
+                                   class="btn-details">Modifier</a>
 
-                    <tr>
-                        <td>
-                            <div class="file-name-cell">
-                                <div class="file-icon icon-doc">DOC</div>
-                                <div class="file-details">
-                                    <span class="file-name">Contrat_Maintenance_2026.docx</span>
-                                    <span class="file-size">500 Ko</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="company-badge">Administratif</span></td>
-                        <td>15 Jan 2026</td>
-                        <td>Admin</td>
-                        <td class="text-right">
-                            <a href="#" class="btn-details">Télécharger</a>
-                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="file-name-cell">
-                                <div class="file-icon icon-xls">XLS</div>
-                                <div class="file-details">
-                                    <span class="file-name">Export_Clients_Janvier.xlsx</span>
-                                    <span class="file-size">1.2 Mo</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td><span class="company-badge">CRM Interne</span></td>
-                        <td>10 Jan 2026</td>
-                        <td>Marc R.</td>
-                        <td class="text-right">
-                            <a href="#" class="btn-details">Télécharger</a>
-                            <a href="#" class="btn-icon" title="Supprimer">&times;</a>
-                        </td>
-                    </tr>
-
+                                <form method="POST" action="{{ route('documents.destroy', $document) }}"
+                                      style="display: inline;"
+                                      onsubmit="return confirm('Supprimer ce document ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-icon" title="Supprimer">&times;</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #94a3b8; padding: 30px;">
+                                Aucun document déposé pour le moment.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
     </div>
+
+    <script src="{{ asset('javascript/filter_bills.js') }}"></script>
 
 </body>
 </html>

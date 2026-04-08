@@ -18,7 +18,7 @@
     </nav>
 
     <div class="user-profile">
-        <span>user</span>
-        <div class="avatar">U</div>
+        <span>{{ auth()->user()->name }}</span>
+        <div class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
     </div>
 </header>
