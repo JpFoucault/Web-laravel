@@ -25,7 +25,7 @@
                 <tbody>
 
                     @php
-                        // Couleurs disponibles pour les avatars, on les fait tourner
+                        // Couleurs disponibles pour les avatars
                         $couleurs = ['av-yellow', 'av-blue', 'av-green', 'av-purple', 'av-pink'];
                     @endphp
 
@@ -74,7 +74,7 @@
         <div id="popup-{{ $contact->id }}" class="modal-overlay">
             <div class="modal-content">
 
-                <a href="#" class="close-btn">&times;</a>
+                <a href="#" class="close-btn">x</a>
 
                 <div class="contact-header">
                     <div class="avatar {{ $couleur }}">{{ $initiales }}</div>

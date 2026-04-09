@@ -10,11 +10,9 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            // Le nom personnalisé donné par l'utilisateur (ex: "Facture famille Guid")
             $table->string('nom_facture');
-            // Le nom du fichier tel qu'il est sauvegardé sur le serveur (timestamp_nomoriginal)
             $table->string('nom_fichier');
-            // L'utilisateur qui a déposé le fichier
+            $table->string('statut')->default('en cours');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

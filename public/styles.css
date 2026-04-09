@@ -7,7 +7,6 @@ body {
     min-height: 100vh;
 }
 
-/* Début de la page du login*/
 .login-card {
     background-color: #1e293b;
     padding: 40px;
@@ -114,19 +113,12 @@ body {
 .create_account:hover{
     color: #818cf8;
 }
-/* Fin de la page du login */
-
-/* Début page du password oublié*/
 
 .description_forget_password{
     margin-bottom: -6%;
     margin-top: 3%;
     color: #cbd5e1;
 }
-
-/* Fin page du password oublié*/
-
-/* Début page de creation du compte*/
 
 .create_account_card{
     background-color: #1e293b;
@@ -158,9 +150,6 @@ body {
 .link_aha:hover{
     color: #818cf8;
 }
-
-/* Fin page de creation du compte*/
-
 
 .text-required { color: #ef4444; }
 
@@ -472,7 +461,6 @@ tr:hover {
     font-weight: 600;
     font-size: 14px;
     transition: all 0.3s;
-  
 }
 
 .btn-cancel:hover {
@@ -585,17 +573,6 @@ tr:hover {
 .form-header p {
     color: #94a3b8;
     margin-top: 5px;
-}
-
-.form-group, .form-group-project {
-    margin-bottom: 20px;
-}
-
-.form-group label, .form-group-project label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #e2e8f0;
 }
 
 .form-control {
@@ -1259,7 +1236,6 @@ input:checked + .slider:before {
     border-color: #6366f1;
 }
 
-/* Styles pour la page de détails du projet */
 .back-link {
     color: #94a3b8;
     font-size: 14px;
@@ -1391,12 +1367,6 @@ input:checked + .slider:before {
     display: inline-block;
 }
 
-/* ========================================
-   STYLES POUR LE FORMULAIRE DE CRÉATION DE PROJET
-   À ajouter à la fin de styles.css
-   ======================================== */
-
-/* Section de formulaire */
 .form-section {
     margin-bottom: 35px;
     padding-bottom: 25px;
@@ -1417,7 +1387,6 @@ input:checked + .slider:before {
     color: #818cf8;
 }
 
-/* Wrapper pour le champ de technologies */
 .tech-input-wrapper {
     display: flex;
     gap: 10px;
@@ -1447,7 +1416,6 @@ input:checked + .slider:before {
     color: white;
 }
 
-/* Container pour la liste des technologies */
 .tech-list-container {
     display: flex;
     flex-wrap: wrap;
@@ -1456,7 +1424,6 @@ input:checked + .slider:before {
     min-height: 20px;
 }
 
-/* Badge de technologie */
 .tech-badge {
     display: inline-flex;
     align-items: center;
@@ -1486,7 +1453,6 @@ input:checked + .slider:before {
     color: #dc2626;
 }
 
-/* Amélioration des options de collaborateurs */
 .collab-option {
     display: flex;
     align-items: center;

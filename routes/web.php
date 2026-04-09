@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/project/{id}/edit', [ProjectController::class, 'edit'])->name('projets.edit');
     Route::put('/project/{id}', [ProjectController::class, 'update'])->name('projets.update');
     Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('projets.destroy');
+    Route::post('/project/{id}/link-ticket', [ProjectController::class, 'linkTicket'])->name('projets.link_ticket');
 });
 
 require __DIR__.'/auth.php';

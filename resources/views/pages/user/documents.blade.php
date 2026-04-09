@@ -71,7 +71,7 @@
                                       onsubmit="return confirm('Supprimer ce document ?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-icon" title="Supprimer">&times;</button>
+                                    <button type="submit" class="btn-icon" title="Supprimer">x</button>
                                 </form>
                             </td>
                         </tr>

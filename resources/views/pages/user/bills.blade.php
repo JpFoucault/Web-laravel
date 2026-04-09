@@ -60,22 +60,18 @@
                             <td><span class="status-badge {{ $badgeClass }}">{{ $badgeLabel }}</span></td>
                             <td>{{ $facture->created_at->format('d M Y') }}</td>
                             <td class="text-right">
-                                <a href="{{ route('factures.download', $facture) }}"
-                                   class="btn-details" target="_blank">Télécharger</a>
+                                <a href="{{ route('factures.download', $facture) }}" class="btn-details" target="_blank">Télécharger</a>
 
-                                <a href="{{ route('factures.edit', $facture) }}"
-                                   class="btn-details">Modifier</a>
+                                <a href="{{ route('factures.edit', $facture) }}" class="btn-details">Modifier</a>
 
-                                <form method="POST" action="{{ route('factures.destroy', $facture) }}"
-                                      style="display: inline;"
-                                      onsubmit="return confirm('Supprimer cette facture ?')">
+                                <form method="POST" action="{{ route('factures.destroy', $facture) }}" style="display: inline;" onsubmit="return confirm('Supprimer cette facture ?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-icon" title="Supprimer">&times;</button>
+                                    <button type="submit" class="btn-icon" title="Supprimer">x</button>
                                 </form>
                             </td>
                         </tr>
-                    @empty
+                        @empty
                         <tr>
                             <td colspan="5" style="text-align: center; color: #94a3b8; padding: 30px;">
                                 Aucune facture déposée pour le moment.
