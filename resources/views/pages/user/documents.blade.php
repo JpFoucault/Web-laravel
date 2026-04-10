@@ -60,15 +60,11 @@
                             <td><span class="status-badge {{ $badgeClass }}">{{ $badgeLabel }}</span></td>
                             <td>{{ $document->created_at->format('d M Y') }}</td>
                             <td class="text-right">
-                                <a href="{{ route('documents.download', $document) }}"
-                                   class="btn-details" target="_blank">Télécharger</a>
+                                <a href="{{ route('documents.download', $document) }}" class="btn-details" target="_blank">Télécharger</a>
 
-                                <a href="{{ route('documents.edit', $document) }}"
-                                   class="btn-details">Modifier</a>
+                                <a href="{{ route('documents.edit', $document) }}" class="btn-details">Modifier</a>
 
-                                <form method="POST" action="{{ route('documents.destroy', $document) }}"
-                                      style="display: inline;"
-                                      onsubmit="return confirm('Supprimer ce document ?')">
+                                <form method="POST" action="{{ route('documents.destroy', $document) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce document ?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-icon" title="Supprimer">x</button>
